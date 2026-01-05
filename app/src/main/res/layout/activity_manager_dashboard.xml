@@ -1,0 +1,534 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundSecondary"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header Section -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_dashboard_header"
+            android:padding="24dp"
+            android:paddingBottom="32dp">
+
+            <!-- Welcome Text -->
+            <LinearLayout
+                android:id="@+id/welcomeSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Welcome Back,"
+                    android:textColor="@color/textColorOnDark"
+                    android:textSize="16sp"
+                    android:alpha="0.8"/>
+
+                <TextView
+                    android:id="@+id/tvManagerName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Manager"
+                    android:textColor="@color/textColorOnDark"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="4dp"/>
+
+            </LinearLayout>
+
+            <!-- Profile Icon -->
+            <LinearLayout
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/circle_outline"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/ivProfile"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_manage"
+                    android:tint="@color/white"/>
+
+            </LinearLayout>
+
+            <!-- Date Display -->
+            <TextView
+                android:id="@+id/tvCurrentDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/welcomeSection"
+                android:layout_marginTop="8dp"
+                android:text="Monday, January 3, 2026"
+                android:textColor="@color/textColorOnDark"
+                android:textSize="14sp"
+                android:alpha="0.7"/>
+
+        </RelativeLayout>
+
+        <!-- Statistics Cards Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="-16dp">
+
+            <!-- First Row: Total Orders & Revenue -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!-- Total Orders Card -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/card_elevated"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/circle_orange"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@android:drawable/ic_menu_agenda"
+                            android:tint="@color/white"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvTotalOrders"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Orders"
+                        android:textColor="@color/textColorSecondary"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Today"
+                        android:textColor="@color/colorSecondary"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp"/>
+
+                </LinearLayout>
+
+                <!-- Total Revenue Card -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/card_elevated"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/circle_green"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@android:drawable/ic_menu_sort_by_size"
+                            android:tint="@color/white"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvTotalRevenue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$0"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Revenue"
+                        android:textColor="@color/textColorSecondary"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Today"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Second Row: Active Orders & Staff -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="16dp">
+
+                <!-- Active Orders Card -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/card_elevated"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/circle_primary"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@android:drawable/ic_popup_sync"
+                            android:tint="@color/white"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvActiveOrders"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Active Orders"
+                        android:textColor="@color/textColorSecondary"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="In Progress"
+                        android:textColor="@color/statusInProgress"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp"/>
+
+                </LinearLayout>
+
+                <!-- Staff Online Card -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/card_elevated"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/badge_role_manager"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@android:drawable/ic_menu_myplaces"
+                            android:tint="@color/white"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvStaffOnline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Staff Online"
+                        android:textColor="@color/textColorSecondary"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Active Now"
+                        android:textColor="@color/roleManager"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="4dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Quick Actions Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:paddingTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quick Actions"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- First Row: View All Orders & Analytics -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!-- View All Orders Button -->
+                <Button
+                    android:id="@+id/btnViewAllOrders"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/button_primary_ripple"
+                    android:drawableTop="@android:drawable/ic_menu_view"
+                    android:drawableTint="@color/white"
+                    android:drawablePadding="8dp"
+                    android:text="View All\nOrders"
+                    android:textColor="@color/textColorOnPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:gravity="center"/>
+
+                <!-- View Analytics Button -->
+                <Button
+                    android:id="@+id/btnViewAnalytics"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/button_secondary"
+                    android:drawableTop="@android:drawable/ic_menu_info_details"
+                    android:drawableTint="@color/white"
+                    android:drawablePadding="8dp"
+                    android:text="View\nAnalytics"
+                    android:textColor="@color/textColorOnPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+            <!-- Second Row: Manage Menu & Staff -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="16dp">
+
+                <!-- Manage Menu Button -->
+                <Button
+                    android:id="@+id/btnManageMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/button_outlined"
+                    android:drawableTop="@android:drawable/ic_menu_edit"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="8dp"
+                    android:text="Manage\nMenu"
+                    android:textColor="@color/colorSecondary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:gravity="center"/>
+
+                <!-- Manage Staff Button -->
+                <Button
+                    android:id="@+id/btnManageStaff"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/button_outlined"
+                    android:drawableTop="@android:drawable/ic_menu_my_calendar"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="8dp"
+                    android:text="Manage\nStaff"
+                    android:textColor="@color/colorSecondary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+            <!-- Third Row: Reports & Settings -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="16dp">
+
+                <!-- Reports Button -->
+                <Button
+                    android:id="@+id/btnReports"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/button_outlined"
+                    android:drawableTop="@android:drawable/ic_menu_report_image"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="8dp"
+                    android:text="View\nReports"
+                    android:textColor="@color/colorSecondary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:gravity="center"/>
+
+                <!-- Settings Button -->
+                <Button
+                    android:id="@+id/btnSettings"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/button_outlined"
+                    android:drawableTop="@android:drawable/ic_menu_preferences"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="8dp"
+                    android:text="Settings"
+                    android:textColor="@color/colorSecondary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Recent Activity Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Recent Activity"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tvViewAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View All"
+                    android:textColor="@color/colorSecondary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+            </LinearLayout>
+
+            <!-- Recent Activity List (placeholder) -->
+            <LinearLayout
+                android:id="@+id/llRecentActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/card_elevated"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No recent activity"
+                    android:textColor="@color/textColorSecondary"
+                    android:textSize="14sp"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

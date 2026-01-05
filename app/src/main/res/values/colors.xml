@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Color Palette - Professional Restaurant Theme -->
+    <color name="colorPrimary">#2C3E50</color> <!-- Dark Slate Blue - Professional, trustworthy -->
+    <color name="colorPrimaryDark">#1A252F</color> <!-- Darker variant -->
+    <color name="colorPrimaryLight">#34495E</color> <!-- Lighter variant -->
+
+    <!-- Secondary Colors -->
+    <color name="colorSecondary">#E67E22</color> <!-- Warm Orange - Appetite stimulating -->
+    <color name="colorSecondaryDark">#D35400</color> <!-- Darker Orange -->
+    <color name="colorSecondaryLight">#F39C12</color> <!-- Lighter Orange/Gold -->
+
+    <!-- Accent Color -->
+    <color name="colorAccent">#27AE60</color> <!-- Fresh Green - Success, freshness -->
+    <color name="colorAccentLight">#2ECC71</color> <!-- Lighter Green -->
+
+    <!-- Status Colors -->
+    <color name="statusPending">#F39C12</color> <!-- Orange - Order pending -->
+    <color name="statusInProgress">#3498DB</color> <!-- Blue - Order in progress -->
+    <color name="statusReady">#27AE60</color> <!-- Green - Order ready -->
+    <color name="statusServed">#95A5A6</color> <!-- Grey - Order served -->
+    <color name="statusCancelled">#E74C3C</color> <!-- Red - Order cancelled -->
+
+    <!-- Role-specific Colors (for visual identification) -->
+    <color name="roleManager">#8E44AD</color> <!-- Purple - Manager -->
+    <color name="roleWaiter">#3498DB</color> <!-- Blue - Waiter -->
+    <color name="roleChef">#E67E22</color> <!-- Orange - Chef -->
+
+    <!-- Background Colors -->
+    <color name="backgroundPrimary">#FFFFFF</color> <!-- White -->
+    <color name="backgroundSecondary">#F5F6FA</color> <!-- Light Grey -->
+    <color name="backgroundCard">#FFFFFF</color> <!-- Card background -->
+    <color name="backgroundDark">#2C3E50</color> <!-- Dark background -->
+
+    <!-- Text Colors -->
+    <color name="textColorPrimary">#2C3E50</color> <!-- Dark text on light backgrounds -->
+    <color name="textColorSecondary">#7F8C8D</color> <!-- Grey text for hints -->
+    <color name="textColorOnDark">#FFFFFF</color> <!-- White text on dark backgrounds -->
+    <color name="textColorOnPrimary">#FFFFFF</color> <!-- White text on primary color -->
+    <color name="textColorHint">#BDC3C7</color> <!-- Light grey for hints -->
+
+    <!-- Button Colors -->
+    <color name="buttonPrimary">#E67E22</color> <!-- Orange button -->
+    <color name="buttonSecondary">#27AE60</color> <!-- Green button -->
+    <color name="buttonDanger">#E74C3C</color> <!-- Red button for delete/cancel -->
+    <color name="buttonDisabled">#BDC3C7</color> <!-- Grey for disabled -->
+
+    <!-- Border & Divider Colors -->
+    <color name="divider">#ECF0F1</color> <!-- Light divider -->
+    <color name="borderColor">#E0E0E0</color> <!-- Border color -->
+    <color name="borderColorDark">#95A5A6</color> <!-- Darker border -->
+
+    <!-- Payment Method Colors -->
+    <color name="paymentCash">#27AE60</color> <!-- Green for cash -->
+    <color name="paymentCard">#3498DB</color> <!-- Blue for card -->
+    <color name="paymentOnline">#9B59B6</color> <!-- Purple for online -->
+
+    <!-- Other Essential Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="shadowColor">#1A000000</color> <!-- 10% black for shadows -->
+
+    <!-- Overlay Colors -->
+    <color name="overlayDark">#80000000</color> <!-- 50% black overlay -->
+    <color name="overlayLight">#40FFFFFF</color> <!-- 25% white overlay -->
+
+    <!-- Notification & Alert Colors -->
+    <color name="alertSuccess">#27AE60</color> <!-- Green -->
+    <color name="alertWarning">#F39C12</color> <!-- Orange -->
+    <color name="alertError">#E74C3C</color> <!-- Red -->
+    <color name="alertInfo">#3498DB</color> <!-- Blue -->
+</resources>

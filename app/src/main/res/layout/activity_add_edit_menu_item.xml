@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundSecondary"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Toolbar -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            app:title="Add Menu Item"
+            app:titleTextColor="@color/white"
+            app:navigationIcon="@android:drawable/ic_menu_close_clear_cancel" />
+
+        <!-- Form Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Image Upload Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Item Image"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/card_background">
+
+                <ImageView
+                    android:id="@+id/ivMenuItemImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@android:drawable/ic_menu_gallery"/>
+
+                <!-- Upload Options -->
+                <LinearLayout
+                    android:id="@+id/llUploadOptions"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:background="#80000000">
+
+                    <Button
+                        android:id="@+id/btnCamera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_primary_ripple"
+                        android:text="Camera"
+                        android:textColor="@color/white"
+                        android:drawableTop="@android:drawable/ic_menu_camera"
+                        android:drawableTint="@color/white"
+                        android:padding="12dp"
+                        android:layout_marginEnd="8dp"/>
+
+                    <Button
+                        android:id="@+id/btnGallery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_secondary"
+                        android:text="Gallery"
+                        android:textColor="@color/white"
+                        android:drawableTop="@android:drawable/ic_menu_gallery"
+                        android:drawableTint="@color/white"
+                        android:padding="12dp"
+                        android:layout_marginStart="8dp"/>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!-- Item Name -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Item Name *"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+
+            <EditText
+                android:id="@+id/etItemName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_selector"
+                android:hint="Enter item name"
+                android:inputType="textCapWords"
+                android:maxLines="1"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="16sp"/>
+
+            <!-- Category Selection -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category *"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+
+            <Spinner
+                android:id="@+id/spinnerCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_selector"
+                android:padding="12dp"
+                android:popupBackground="@color/white"/>
+
+            <!-- Price -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price *"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+
+            <EditText
+                android:id="@+id/etPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_selector"
+                android:hint="0.00"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="16sp"
+                android:drawableStart="@android:drawable/ic_menu_sort_by_size"
+                android:drawablePadding="8dp"
+                android:drawableTint="@color/colorSecondary"/>
+
+            <!-- Description -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+
+            <EditText
+                android:id="@+id/etDescription"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_selector"
+                android:hint="Enter item description"
+                android:inputType="textMultiLine"
+                android:gravity="start|top"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="16sp"/>
+
+            <!-- Preparation Time -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Preparation Time (minutes)"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+
+            <EditText
+                android:id="@+id/etPrepTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_selector"
+                android:hint="15"
+                android:inputType="number"
+                android:maxLines="1"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="16sp"
+                android:drawableStart="@android:drawable/ic_menu_recent_history"
+                android:drawablePadding="8dp"
+                android:drawableTint="@color/textColorSecondary"/>
+
+            <!-- Allergens -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Allergens (comma-separated)"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"/>
+
+            <EditText
+                android:id="@+id/etAllergens"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_selector"
+                android:hint="e.g., dairy, gluten, nuts"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="16sp"/>
+
+            <!-- Availability Switch -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="20dp"
+                android:padding="12dp"
+                android:background="@drawable/card_background">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Available for Order"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchAvailable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    app:thumbTint="@color/colorAccent"
+                    app:trackTint="@color/borderColor"/>
+
+            </LinearLayout>
+
+            <!-- Save Button -->
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/button_primary_ripple"
+                android:text="Save Menu Item"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:padding="16dp"/>
+
+            <!-- Loading Indicator -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
