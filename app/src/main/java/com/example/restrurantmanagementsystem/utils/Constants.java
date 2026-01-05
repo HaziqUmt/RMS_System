@@ -2,7 +2,7 @@ package com.example.restrurantmanagementsystem.utils;
 
 public class Constants {
 
-    // Collections jkj
+    // Collections jkjhjhj
     public static final String USERS_COLLECTION = "users";
     public static final String RESTAURANTS_PATH = "restaurants";
     public static final String CATEGORIES_PATH = "categories";
