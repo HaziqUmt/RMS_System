@@ -31,12 +31,29 @@ public class FirebaseHelper {
         return mFirestore.collection(Constants.RESTAURANTS_PATH);
     }
 
-    public CollectionReference getCategoriesCollection() {
-        return getRestaurantCollection().document(Constants.DEFAULT_RESTAURANT_ID).collection(Constants.CATEGORIES_PATH);
+    public CollectionReference getCategoriesCollection(String restaurantId) {
+        if (restaurantId == null || restaurantId.isEmpty()) {
+            restaurantId = Constants.DEFAULT_RESTAURANT_ID;
+        }
+        return getRestaurantCollection().document(restaurantId).collection(Constants.CATEGORIES_PATH);
     }
 
-    public CollectionReference getMenuItemsCollection() {
-        return getRestaurantCollection().document(Constants.DEFAULT_RESTAURANT_ID).collection(Constants.MENU_ITEMS_PATH);
+    public CollectionReference getMenuItemsCollection(String restaurantId) {
+        if (restaurantId == null || restaurantId.isEmpty()) {
+            restaurantId = Constants.DEFAULT_RESTAURANT_ID;
+        }
+        return getRestaurantCollection().document(restaurantId).collection(Constants.MENU_ITEMS_PATH);
+    }
+
+    public CollectionReference getTablesCollection(String restaurantId) {
+        if (restaurantId == null || restaurantId.isEmpty()) {
+            restaurantId = Constants.DEFAULT_RESTAURANT_ID;
+        }
+        return getRestaurantCollection().document(restaurantId).collection(Constants.TABLES_PATH);
+    }
+
+    public CollectionReference getOrdersCollection() {
+        return mFirestore.collection(Constants.ORDERS_PATH);
     }
 
     public StorageReference getMenuImagesReference() {

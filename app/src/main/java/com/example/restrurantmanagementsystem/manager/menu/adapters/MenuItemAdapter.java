@@ -25,6 +25,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MenuIt
     private List<MenuItem> menuItemList;
     private List<MenuItem> menuItemListFull; // For search functionality
     private OnMenuItemClickListener listener;
+    private boolean isAdmin = true;
 
     public interface OnMenuItemClickListener {
         void onEditClick(MenuItem menuItem);
@@ -37,6 +38,11 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MenuIt
         this.menuItemList = new ArrayList<>();
         this.menuItemListFull = new ArrayList<>();
         this.listener = listener;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+        notifyDataSetChanged();
     }
 
     public void setMenuItems(List<MenuItem> items) {
@@ -144,6 +150,11 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MenuIt
                 viewOverlay.setVisibility(View.GONE);
                 tvUnavailable.setVisibility(View.GONE);
             }
+
+            // Show/Hide admin controls
+            ivEdit.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
+            ivDelete.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
+            switchAvailability.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
 
             // Click listeners
             ivEdit.setOnClickListener(v -> {

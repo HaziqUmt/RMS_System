@@ -69,5 +69,6 @@
     <color name="alertSuccess">#27AE60</color> <!-- Green -->
     <color name="alertWarning">#F39C12</color> <!-- Orange -->
     <color name="alertError">#E74C3C</color> <!-- Red -->
+    <color name="errorColor">#E74C3C</color> <!-- Alias for alertError to fix build error -->
     <color name="alertInfo">#3498DB</color> <!-- Blue -->
 </resources>

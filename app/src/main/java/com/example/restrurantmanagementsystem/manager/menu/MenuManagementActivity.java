@@ -52,11 +52,17 @@ public class MenuManagementActivity extends AppCompatActivity implements MenuIte
     private List<Category> categoryList;
     private String currentCategoryFilter = "all";
     private FirebaseHelper firebaseHelper;
+    private String restaurantId;
+    private boolean isAdmin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_management);
+
+        // Get info from intent
+        restaurantId = getIntent().getStringExtra(Constants.KEY_RESTAURANT_ID);
+        isAdmin = getIntent().getBooleanExtra("isAdmin", false);
 
         // Initialize Firebase
         firebaseHelper = FirebaseHelper.getInstance();
@@ -70,6 +76,13 @@ public class MenuManagementActivity extends AppCompatActivity implements MenuIte
         // Load data
         loadCategories();
         loadMenuItems();
+        
+        // Hide admin-only UI if not admin
+        if (!isAdmin) {
+            fabAddItem.setVisibility(View.GONE);
+            btnManageCategories.setVisibility(View.GONE);
+            toolbar.setTitle("Restaurant Menu");
+        }
     }
 
     private void initializeViews() {
@@ -97,6 +110,7 @@ public class MenuManagementActivity extends AppCompatActivity implements MenuIte
 
     private void setupRecyclerView() {
         adapter = new MenuItemAdapter(this, this);
+        adapter.setAdmin(isAdmin);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
     }
@@ -105,12 +119,14 @@ public class MenuManagementActivity extends AppCompatActivity implements MenuIte
         // FAB - Add new menu item
         fabAddItem.setOnClickListener(v -> {
             Intent intent = new Intent(MenuManagementActivity.this, AddEditMenuItemActivity.class);
+            intent.putExtra(Constants.KEY_RESTAURANT_ID, restaurantId);
             startActivityForResult(intent, Constants.REQUEST_ADD_MENU_ITEM);
         });
 
         // Manage Categories button
         btnManageCategories.setOnClickListener(v -> {
             Intent intent = new Intent(MenuManagementActivity.this, CategoryManagementActivity.class);
+            intent.putExtra(Constants.KEY_RESTAURANT_ID, restaurantId);
             startActivityForResult(intent, Constants.REQUEST_MANAGE_CATEGORIES);
         });
 
@@ -153,7 +169,7 @@ public class MenuManagementActivity extends AppCompatActivity implements MenuIte
 
     private void loadCategories() {
         Log.d(TAG, "loadCategories: Fetching categories from Firestore...");
-        firebaseHelper.getCategoriesCollection()
+        firebaseHelper.getCategoriesCollection(restaurantId)
                 .orderBy("displayOrder", Query.Direction.ASCENDING)
                 .addSnapshotListener((snapshots, e) -> {
                     if (e != null) {
@@ -175,7 +191,7 @@ public class MenuManagementActivity extends AppCompatActivity implements MenuIte
                             tabLayout.addTab(tabLayout.newTab().setText(category.getName()));
                         }
 
-                        if (categoryList.isEmpty()) {
+                        if (categoryList.isEmpty() && isAdmin) {
                             Toast.makeText(MenuManagementActivity.this, "No categories found. Add categories first.", Toast.LENGTH_LONG).show();
                         }
                     }
@@ -184,8 +200,8 @@ public class MenuManagementActivity extends AppCompatActivity implements MenuIte
 
     private void loadMenuItems() {
         showLoading(true);
-        Log.d(TAG, "loadMenuItems: Fetching menu items from Firestore...");
-        firebaseHelper.getMenuItemsCollection()
+        Log.d(TAG, "loadMenuItems: Fetching menu items from Firestore for restaurant: " + restaurantId);
+        firebaseHelper.getMenuItemsCollection(restaurantId)
                 .addSnapshotListener((snapshots, e) -> {
                     if (e != null) {
                         Log.e(TAG, "Error loading menu items", e);
@@ -216,14 +232,17 @@ public class MenuManagementActivity extends AppCompatActivity implements MenuIte
 
     @Override
     public void onEditClick(com.example.restrurantmanagementsystem.models.MenuItem menuItem) {
+        if (!isAdmin) return;
         Intent intent = new Intent(this, AddEditMenuItemActivity.class);
         intent.putExtra(Constants.KEY_MENU_ITEM, menuItem);
         intent.putExtra(Constants.KEY_IS_EDIT_MODE, true);
+        intent.putExtra(Constants.KEY_RESTAURANT_ID, restaurantId);
         startActivityForResult(intent, Constants.REQUEST_EDIT_MENU_ITEM);
     }
 
     @Override
     public void onDeleteClick(com.example.restrurantmanagementsystem.models.MenuItem menuItem) {
+        if (!isAdmin) return;
         new AlertDialog.Builder(this)
                 .setTitle("Delete Menu Item")
                 .setMessage("Are you sure you want to delete \"" + menuItem.getName() + "\"?")
@@ -234,10 +253,11 @@ public class MenuManagementActivity extends AppCompatActivity implements MenuIte
 
     @Override
     public void onAvailabilityChanged(com.example.restrurantmanagementsystem.models.MenuItem menuItem, boolean isAvailable) {
+        if (!isAdmin) return;
         menuItem.setAvailable(isAvailable);
         menuItem.setUpdatedAt(System.currentTimeMillis());
 
-        firebaseHelper.getMenuItemsCollection().document(menuItem.getId())
+        firebaseHelper.getMenuItemsCollection(restaurantId).document(menuItem.getId())
                 .set(menuItem)
                 .addOnSuccessListener(aVoid -> {
                     String status = isAvailable ? "available" : "unavailable";
@@ -251,7 +271,7 @@ public class MenuManagementActivity extends AppCompatActivity implements MenuIte
     }
 
     private void deleteMenuItem(com.example.restrurantmanagementsystem.models.MenuItem menuItem) {
-        firebaseHelper.getMenuItemsCollection().document(menuItem.getId())
+        firebaseHelper.getMenuItemsCollection(restaurantId).document(menuItem.getId())
                 .delete()
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Menu item deleted successfully",

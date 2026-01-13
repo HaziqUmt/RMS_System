@@ -40,12 +40,14 @@ public class CategoryManagementActivity extends AppCompatActivity
     private CategoryAdapter adapter;
     private List<Category> categoryList;
     private FirebaseHelper firebaseHelper;
+    private String restaurantId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_management);
 
+        restaurantId = getIntent().getStringExtra(Constants.KEY_RESTAURANT_ID);
         firebaseHelper = FirebaseHelper.getInstance();
 
         initializeViews();
@@ -83,9 +85,9 @@ public class CategoryManagementActivity extends AppCompatActivity
 
     private void loadCategories() {
         progressBar.setVisibility(View.VISIBLE);
-        Log.d(TAG, "loadCategories: Fetching categories from Firestore...");
+        Log.d(TAG, "loadCategories: Fetching categories from Firestore for restaurant: " + restaurantId);
 
-        firebaseHelper.getCategoriesCollection()
+        firebaseHelper.getCategoriesCollection(restaurantId)
                 .orderBy("displayOrder", Query.Direction.ASCENDING)
                 .addSnapshotListener((snapshots, e) -> {
                     if (e != null) {
@@ -136,13 +138,13 @@ public class CategoryManagementActivity extends AppCompatActivity
 
     private void addCategory(String categoryName) {
         Log.d(TAG, "addCategory: Adding category: " + categoryName);
-        String categoryId = firebaseHelper.generateUniqueId(firebaseHelper.getCategoriesCollection());
+        String categoryId = firebaseHelper.generateUniqueId(firebaseHelper.getCategoriesCollection(restaurantId));
         int displayOrder = categoryList.size() + 1;
 
         Category category = new Category(categoryId, categoryName, displayOrder,
-                Constants.DEFAULT_RESTAURANT_ID);
+                restaurantId);
 
-        firebaseHelper.getCategoriesCollection().document(categoryId)
+        firebaseHelper.getCategoriesCollection(restaurantId).document(categoryId)
                 .set(category)
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "Category added successfully to Firestore.");
@@ -189,7 +191,7 @@ public class CategoryManagementActivity extends AppCompatActivity
     }
 
     private void updateCategory(Category category) {
-        firebaseHelper.getCategoriesCollection().document(category.getId())
+        firebaseHelper.getCategoriesCollection(restaurantId).document(category.getId())
                 .set(category)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Category updated successfully",
@@ -203,7 +205,7 @@ public class CategoryManagementActivity extends AppCompatActivity
     }
 
     private void deleteCategory(Category category) {
-        firebaseHelper.getCategoriesCollection().document(category.getId())
+        firebaseHelper.getCategoriesCollection(restaurantId).document(category.getId())
                 .delete()
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Category deleted successfully",

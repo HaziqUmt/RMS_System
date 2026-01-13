@@ -41,26 +41,38 @@ public class MainActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         String role = documentSnapshot.getString("role");
-                        Log.d(TAG, "Successfully fetched role: " + role);
+                        String restaurantId = documentSnapshot.getString("restaurantId");
+                        String name = documentSnapshot.getString("name");
+                        
+                        Log.d(TAG, "Successfully fetched role: " + role + " for restaurant: " + restaurantId);
 
+                        Intent intent;
                         if ("Manager".equals(role)) {
                             Log.d(TAG, "Redirecting to ManagerDashboard.");
-                            startActivity(new Intent(MainActivity.this, ManagerDashboard.class));
+                            intent = new Intent(MainActivity.this, ManagerDashboard.class);
                         } else if ("Waiter".equals(role)) {
                             Log.d(TAG, "Redirecting to WaiterDashboard.");
-                            startActivity(new Intent(MainActivity.this, WaiterDashboard.class));
+                            intent = new Intent(MainActivity.this, WaiterDashboard.class);
                         } else if ("Chef".equals(role)) {
                             Log.d(TAG, "Redirecting to ChefDashboard.");
-                            startActivity(new Intent(MainActivity.this, ChefDashboard.class));
+                            intent = new Intent(MainActivity.this, ChefDashboard.class);
                         } else {
                             Log.w(TAG, "Role not recognized: '" + role + "'. Redirecting to LoginActivity.");
                             startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                            finish();
+                            return;
                         }
+                        
+                        intent.putExtra(Constants.KEY_RESTAURANT_ID, restaurantId);
+                        intent.putExtra("managerName", name); // For ManagerDashboard name display
+                        startActivity(intent);
+                        finish();
+                        
                     } else {
                         Log.w(TAG, "User document does not exist in Firestore. Redirecting to LoginActivity.");
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        finish();
                     }
-                    finish();
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Error fetching user document from Firestore", e);

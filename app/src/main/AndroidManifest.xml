@@ -51,6 +51,44 @@
             android:name=".manager.menu.CategoryManagementActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".manager.staff.StaffManagementActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".manager.staff.AddStaffActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".manager.TableManagementActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <!-- Waiter Module Activities -->
+        <activity
+            android:name=".waiter.TableSelectionActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".waiter.NewOrderActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".waiter.OrderCartActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".waiter.MyOrdersActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".waiter.OrderDetailsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

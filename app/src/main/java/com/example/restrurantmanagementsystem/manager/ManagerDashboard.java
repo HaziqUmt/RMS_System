@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.restrurantmanagementsystem.R;
 import com.example.restrurantmanagementsystem.manager.menu.MenuManagementActivity;
+import com.example.restrurantmanagementsystem.manager.staff.StaffManagementActivity;
+import com.example.restrurantmanagementsystem.utils.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,10 +29,14 @@ public class ManagerDashboard extends AppCompatActivity {
     private Button btnReports, btnSettings;
     private TextView tvViewAll;
 
+    private String restaurantId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_dashboard);
+
+        restaurantId = getIntent().getStringExtra(Constants.KEY_RESTAURANT_ID);
 
         // Initialize UI components
         initializeViews();
@@ -64,6 +70,10 @@ public class ManagerDashboard extends AppCompatActivity {
         btnManageStaff = findViewById(R.id.btnManageStaff);
         btnReports = findViewById(R.id.btnReports);
         btnSettings = findViewById(R.id.btnSettings);
+        
+        // Update Settings button to "Manage Tables"
+        btnSettings.setText("Manage\nTables");
+        btnSettings.setCompoundDrawablesWithIntrinsicBounds(0, android.R.drawable.ic_menu_today, 0, 0);
 
         // Other views
         tvViewAll = findViewById(R.id.tvViewAll);
@@ -77,8 +87,6 @@ public class ManagerDashboard extends AppCompatActivity {
     }
 
     private void loadDashboardData() {
-        // TODO: Replace with actual data from Firebase/Database
-
         // For now, using dummy data
         String managerName = getIntent().getStringExtra("managerName");
         if (managerName != null && !managerName.isEmpty()) {
@@ -87,62 +95,57 @@ public class ManagerDashboard extends AppCompatActivity {
             tvManagerName.setText("Manager");
         }
 
-        // Set dummy statistics (replace with real data later)
         tvTotalOrders.setText("0");
         tvTotalRevenue.setText("$0");
         tvActiveOrders.setText("0");
         tvStaffOnline.setText("0");
-
-        // TODO: Fetch real-time data from database
-        // fetchDashboardStatistics();
     }
 
     private void setupClickListeners() {
         // Profile icon click
         ivProfile.setOnClickListener(v -> {
-            // TODO: Navigate to Profile screen
             Toast.makeText(ManagerDashboard.this, "Profile clicked", Toast.LENGTH_SHORT).show();
         });
 
         // View All Orders button
         btnViewAllOrders.setOnClickListener(v -> {
-            // TODO: Navigate to All Orders screen
             Toast.makeText(ManagerDashboard.this, "View All Orders clicked", Toast.LENGTH_SHORT).show();
         });
 
         // View Analytics button
         btnViewAnalytics.setOnClickListener(v -> {
-            // TODO: Navigate to Analytics screen
             Toast.makeText(ManagerDashboard.this, "View Analytics clicked", Toast.LENGTH_SHORT).show();
         });
 
         // Manage Menu button
         btnManageMenu.setOnClickListener(v -> {
             Intent intent = new Intent(ManagerDashboard.this, MenuManagementActivity.class);
+            intent.putExtra(Constants.KEY_RESTAURANT_ID, restaurantId);
+            intent.putExtra("isAdmin", true); // Manager can edit
             startActivity(intent);
         });
 
         // Manage Staff button
         btnManageStaff.setOnClickListener(v -> {
-            // TODO: Navigate to Staff Management screen
-            Toast.makeText(ManagerDashboard.this, "Manage Staff clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ManagerDashboard.this, StaffManagementActivity.class);
+            intent.putExtra(Constants.KEY_RESTAURANT_ID, restaurantId);
+            startActivity(intent);
         });
 
         // Reports button
         btnReports.setOnClickListener(v -> {
-            // TODO: Navigate to Reports screen
             Toast.makeText(ManagerDashboard.this, "View Reports clicked", Toast.LENGTH_SHORT).show();
         });
 
-        // Settings button
+        // Manage Tables button (reusing Settings button)
         btnSettings.setOnClickListener(v -> {
-            // TODO: Navigate to Settings screen
-            Toast.makeText(ManagerDashboard.this, "Settings clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ManagerDashboard.this, TableManagementActivity.class);
+            intent.putExtra(Constants.KEY_RESTAURANT_ID, restaurantId);
+            startActivity(intent);
         });
 
         // View All recent activity
         tvViewAll.setOnClickListener(v -> {
-            // TODO: Navigate to Activity History screen
             Toast.makeText(ManagerDashboard.this, "View All Activity clicked", Toast.LENGTH_SHORT).show();
         });
     }
@@ -151,10 +154,5 @@ public class ManagerDashboard extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         loadDashboardData();
-    }
-
-    private String getTodayDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        return dateFormat.format(new Date());
     }
 }

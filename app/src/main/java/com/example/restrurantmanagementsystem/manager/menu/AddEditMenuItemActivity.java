@@ -61,11 +61,15 @@ public class AddEditMenuItemActivity extends AppCompatActivity {
     private Uri selectedImageUri;
     private Bitmap selectedImageBitmap;
     private String uploadedImageUrl;
+    private String restaurantId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_menu_item);
+
+        // Get restaurantId from intent
+        restaurantId = getIntent().getStringExtra(Constants.KEY_RESTAURANT_ID);
 
         // Initialize Firebase
         firebaseHelper = FirebaseHelper.getInstance();
@@ -124,7 +128,7 @@ public class AddEditMenuItemActivity extends AppCompatActivity {
     }
 
     private void loadCategories() {
-        firebaseHelper.getCategoriesCollection()
+        firebaseHelper.getCategoriesCollection(restaurantId)
                 .orderBy("displayOrder", Query.Direction.ASCENDING)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -340,7 +344,7 @@ public class AddEditMenuItemActivity extends AppCompatActivity {
             itemId = currentMenuItem.getId();
         } else {
             // Generate new ID
-            itemId = firebaseHelper.generateUniqueId(firebaseHelper.getMenuItemsCollection());
+            itemId = firebaseHelper.generateUniqueId(firebaseHelper.getMenuItemsCollection(restaurantId));
         }
 
         MenuItem menuItem = new MenuItem(
@@ -354,7 +358,7 @@ public class AddEditMenuItemActivity extends AppCompatActivity {
                 switchAvailable.isChecked(),
                 prepTime,
                 allergens,
-                Constants.DEFAULT_RESTAURANT_ID
+                restaurantId
         );
 
         if (isEditMode) {
@@ -363,7 +367,7 @@ public class AddEditMenuItemActivity extends AppCompatActivity {
         }
 
         // Save to Firebase
-        firebaseHelper.getMenuItemsCollection().document(itemId)
+        firebaseHelper.getMenuItemsCollection(restaurantId).document(itemId)
                 .set(menuItem)
                 .addOnSuccessListener(aVoid -> {
                     showLoading(false);
