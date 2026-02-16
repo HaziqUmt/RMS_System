@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,8 +17,8 @@ import com.example.restrurantmanagementsystem.models.Order;
 import com.example.restrurantmanagementsystem.utils.Constants;
 import com.example.restrurantmanagementsystem.utils.FirebaseHelper;
 import com.example.restrurantmanagementsystem.waiter.adapters.CartItemAdapter;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,7 +26,7 @@ import java.util.Locale;
 
 public class OrderDetailsActivity extends AppCompatActivity {
 
-    private MaterialToolbar toolbar;
+    private Toolbar toolbar;
     private TextView tvTableNumber, tvStatus, tvOrderId, tvOrderTime;
     private TextView tvSubtotal, tvTax, tvTotal, tvSpecialNotes;
     private RecyclerView recyclerView;
@@ -35,6 +36,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
     private Order order;
     private String restaurantId;
     private FirebaseFirestore db;
+    private ListenerRegistration orderListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,10 @@ public class OrderDetailsActivity extends AppCompatActivity {
 
         initializeViews();
         setupToolbar();
-        displayOrderDetails();
+        
+        if (order != null) {
+            listenToOrderUpdates();
+        }
     }
 
     private void initializeViews() {
@@ -73,11 +78,24 @@ public class OrderDetailsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
+    private void listenToOrderUpdates() {
+        orderListener = db.collection(Constants.ORDERS_PATH).document(order.getId())
+                .addSnapshotListener((snapshot, e) -> {
+                    if (e != null) {
+                        return;
+                    }
+                    if (snapshot != null && snapshot.exists()) {
+                        order = snapshot.toObject(Order.class);
+                        displayOrderDetails();
+                    }
+                });
+    }
+
     private void displayOrderDetails() {
         if (order == null) return;
 
         tvTableNumber.setText("Table " + order.getTableNumber());
-        tvOrderId.setText("Order #" + order.getId().substring(0, 8).toUpperCase());
+        tvOrderId.setText("Order #" + (order.getId().length() > 8 ? order.getId().substring(0, 8).toUpperCase() : order.getId()));
         
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy, hh:mm a", Locale.getDefault());
         tvOrderTime.setText(sdf.format(new Date(order.getOrderTime())));
@@ -90,13 +108,13 @@ public class OrderDetailsActivity extends AppCompatActivity {
             findViewById(R.id.tvSpecialNotesLabel).setVisibility(View.VISIBLE);
             tvSpecialNotes.setVisibility(View.VISIBLE);
             tvSpecialNotes.setText(order.getSpecialNotes());
+        } else {
+            findViewById(R.id.tvSpecialNotesLabel).setVisibility(View.GONE);
+            tvSpecialNotes.setVisibility(View.GONE);
         }
 
-        // Setup status and action button
         updateStatusUI();
 
-        // Setup items list (Reuse CartItemAdapter in a read-only way or create simple one)
-        // For simplicity, using CartItemAdapter but disabling interactions
         CartItemAdapter adapter = new CartItemAdapter(this, null);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -115,7 +133,7 @@ public class OrderDetailsActivity extends AppCompatActivity {
         } else if (Constants.ORDER_STATUS_SERVED.equals(status)) {
             btnAction.setVisibility(View.VISIBLE);
             btnAction.setText("CREATE BILL");
-            btnAction.setOnClickListener(v -> Toast.makeText(this, "Billing feature coming soon", Toast.LENGTH_SHORT).show());
+            btnAction.setOnClickListener(v -> createBill());
         }
     }
 
@@ -127,17 +145,39 @@ public class OrderDetailsActivity extends AppCompatActivity {
                 .update("status", newStatus, "servedTime", System.currentTimeMillis())
                 .addOnSuccessListener(aVoid -> {
                     progressBar.setVisibility(View.GONE);
-                    order.setStatus(newStatus);
-                    updateStatusUI();
-                    Toast.makeText(this, "Order updated to " + newStatus, Toast.LENGTH_SHORT).show();
-                    
-                    // If served, we might want to update table status back to available 
-                    // or keep it occupied until bill is paid. Usually it's occupied.
+                    btnAction.setEnabled(true);
+                    Toast.makeText(this, "Order updated", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
                     progressBar.setVisibility(View.GONE);
                     btnAction.setEnabled(true);
                     Toast.makeText(this, "Failed to update order", Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    private void createBill() {
+        progressBar.setVisibility(View.VISIBLE);
+        btnAction.setEnabled(false);
+
+        FirebaseHelper.getInstance().getTablesCollection(restaurantId).document(order.getTableId())
+                .update("status", Constants.TABLE_STATUS_AVAILABLE)
+                .addOnSuccessListener(aVoid -> {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(this, "Bill created and table is now available", Toast.LENGTH_LONG).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    progressBar.setVisibility(View.GONE);
+                    btnAction.setEnabled(true);
+                    Toast.makeText(this, "Error clearing table", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (orderListener != null) {
+            orderListener.remove();
+        }
     }
 }

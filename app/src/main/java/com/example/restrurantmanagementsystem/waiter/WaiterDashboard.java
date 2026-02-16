@@ -2,7 +2,9 @@ package com.example.restrurantmanagementsystem.waiter;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,12 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.restrurantmanagementsystem.R;
+import com.example.restrurantmanagementsystem.auth.LoginActivity;
 import com.example.restrurantmanagementsystem.manager.menu.MenuManagementActivity;
 import com.example.restrurantmanagementsystem.models.Order;
 import com.example.restrurantmanagementsystem.utils.Constants;
 import com.example.restrurantmanagementsystem.utils.FirebaseHelper;
 import com.example.restrurantmanagementsystem.waiter.adapters.WaiterOrderAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import java.text.SimpleDateFormat;
@@ -27,9 +31,12 @@ import java.util.Locale;
 
 public class WaiterDashboard extends AppCompatActivity implements WaiterOrderAdapter.OnOrderClickListener {
 
+    private static final String TAG = "WaiterDashboard";
+
     private TextView tvWaiterName, tvCurrentDate;
     private TextView tvActiveOrdersCount, tvServedTodayCount, tvTotalRevenue;
     private Button btnNewOrder, btnMyOrders, btnViewMenu;
+    private LinearLayout llLogout;
     private RecyclerView recyclerViewRecentOrders;
 
     private String restaurantId;
@@ -37,6 +44,7 @@ public class WaiterDashboard extends AppCompatActivity implements WaiterOrderAda
     private WaiterOrderAdapter adapter;
     private List<Order> recentOrders;
     private FirebaseHelper firebaseHelper;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +54,7 @@ public class WaiterDashboard extends AppCompatActivity implements WaiterOrderAda
         restaurantId = getIntent().getStringExtra(Constants.KEY_RESTAURANT_ID);
         waiterId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         firebaseHelper = FirebaseHelper.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         initializeViews();
         setupRecyclerView();
@@ -63,9 +72,10 @@ public class WaiterDashboard extends AppCompatActivity implements WaiterOrderAda
         btnNewOrder = findViewById(R.id.btnNewOrder);
         btnMyOrders = findViewById(R.id.btnMyOrders);
         btnViewMenu = findViewById(R.id.btnViewMenu);
+        llLogout = findViewById(R.id.llLogout);
         recyclerViewRecentOrders = findViewById(R.id.recyclerViewRecentOrders);
 
-        String waiterName = getIntent().getStringExtra("managerName"); // Reusing key for name
+        String waiterName = getIntent().getStringExtra("managerName");
         if (waiterName != null) tvWaiterName.setText(waiterName);
     }
 
@@ -77,6 +87,14 @@ public class WaiterDashboard extends AppCompatActivity implements WaiterOrderAda
     }
 
     private void setupClickListeners() {
+        llLogout.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(WaiterDashboard.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
+
         btnNewOrder.setOnClickListener(v -> {
             Intent intent = new Intent(this, TableSelectionActivity.class);
             intent.putExtra(Constants.KEY_RESTAURANT_ID, restaurantId);
@@ -92,6 +110,7 @@ public class WaiterDashboard extends AppCompatActivity implements WaiterOrderAda
         btnViewMenu.setOnClickListener(v -> {
             Intent intent = new Intent(this, MenuManagementActivity.class);
             intent.putExtra(Constants.KEY_RESTAURANT_ID, restaurantId);
+            intent.putExtra("isAdmin", false);
             startActivity(intent);
         });
     }
@@ -102,23 +121,28 @@ public class WaiterDashboard extends AppCompatActivity implements WaiterOrderAda
     }
 
     private void loadDashboardData() {
-        // Load stats and recent orders
-        firebaseHelper.getOrdersCollection()
+        // Real-time listener for waiter's orders
+        db.collection(Constants.ORDERS_PATH)
                 .whereEqualTo("restaurantId", restaurantId)
                 .whereEqualTo("waiterId", waiterId)
                 .orderBy("orderTime", Query.Direction.DESCENDING)
                 .addSnapshotListener((snapshots, e) -> {
-                    if (e != null || snapshots == null) return;
-
-                    List<Order> allOrders = snapshots.toObjects(Order.class);
-                    updateStats(allOrders);
-                    
-                    // Show only last 5 orders in dashboard
-                    recentOrders.clear();
-                    for (int i = 0; i < Math.min(5, allOrders.size()); i++) {
-                        recentOrders.add(allOrders.get(i));
+                    if (e != null) {
+                        Log.e(TAG, "Listen failed.", e);
+                        return;
                     }
-                    adapter.setOrders(recentOrders);
+
+                    if (snapshots != null) {
+                        List<Order> allOrders = snapshots.toObjects(Order.class);
+                        updateStats(allOrders);
+                        
+                        // Update Recent Orders (last 5)
+                        recentOrders.clear();
+                        for (int i = 0; i < Math.min(5, allOrders.size()); i++) {
+                            recentOrders.add(allOrders.get(i));
+                        }
+                        adapter.setOrders(recentOrders);
+                    }
                 });
     }
 
@@ -130,11 +154,13 @@ public class WaiterDashboard extends AppCompatActivity implements WaiterOrderAda
         long startOfDay = getStartOfDayTimestamp();
 
         for (Order order : orders) {
+            // Count active orders (anything not served or cancelled)
             if (!order.getStatus().equals(Constants.ORDER_STATUS_SERVED) && 
                 !order.getStatus().equals(Constants.ORDER_STATUS_CANCELLED)) {
                 active++;
             }
             
+            // Daily stats
             if (order.getOrderTime() >= startOfDay) {
                 if (order.getStatus().equals(Constants.ORDER_STATUS_SERVED)) {
                     servedToday++;

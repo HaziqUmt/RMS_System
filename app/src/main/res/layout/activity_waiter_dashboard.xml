@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/background_dashboard_header"
             android:padding="24dp"
-            android:paddingBottom="32dp">
+            android:paddingBottom="40dp">
 
             <LinearLayout
                 android:id="@+id/welcomeSection"
@@ -44,6 +44,26 @@
                     android:layout_marginTop="4dp"/>
             </LinearLayout>
 
+            <!-- Logout Icon -->
+            <LinearLayout
+                android:id="@+id/llLogout"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/circle_outline"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/ivLogout"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_lock_power_off"
+                    android:tint="@color/white"/>
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tvCurrentDate"
                 android:layout_width="wrap_content"
@@ -56,13 +76,13 @@
                 android:alpha="0.7"/>
         </RelativeLayout>
 
-        <!-- Stats Section -->
+        <!-- Stats Section - Added margin top to prevent touching banner -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="16dp"
-            android:layout_marginTop="-16dp"
+            android:layout_marginTop="8dp"
             android:weightSum="3">
 
             <com.google.android.material.card.MaterialCardView
@@ -70,7 +90,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
-                app:cardCornerRadius="12dp">
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -89,7 +110,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Active"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp"
+                        android:textColor="@color/textColorSecondary"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -98,7 +120,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginHorizontal="4dp"
-                app:cardCornerRadius="12dp">
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -117,7 +140,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Served"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp"
+                        android:textColor="@color/textColorSecondary"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -126,7 +150,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
-                app:cardCornerRadius="12dp">
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -145,7 +170,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Today"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp"
+                        android:textColor="@color/textColorSecondary"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
@@ -163,7 +189,8 @@
                 android:text="Quick Actions"
                 android:textStyle="bold"
                 android:textSize="18sp"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/textColorPrimary"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -180,7 +207,8 @@
                     android:text="New Order"
                     android:backgroundTint="@color/colorPrimary"
                     android:drawableTop="@android:drawable/ic_input_add"
-                    android:paddingTop="12dp"/>
+                    android:paddingTop="12dp"
+                    android:textColor="@color/white"/>
 
                 <Button
                     android:id="@+id/btnMyOrders"
@@ -191,7 +219,8 @@
                     android:text="My Orders"
                     android:backgroundTint="@color/colorSecondary"
                     android:drawableTop="@android:drawable/ic_menu_agenda"
-                    android:paddingTop="12dp"/>
+                    android:paddingTop="12dp"
+                    android:textColor="@color/white"/>
             </LinearLayout>
 
             <Button
@@ -202,7 +231,8 @@
                 android:text="Browse Menu"
                 android:backgroundTint="@color/backgroundDark"
                 android:drawableStart="@drawable/ic_restaurant_menu"
-                android:paddingStart="24dp"/>
+                android:paddingStart="24dp"
+                android:textColor="@color/white"/>
         </LinearLayout>
 
         <!-- Recent Activity -->
@@ -218,7 +248,8 @@
                 android:text="Recent Orders"
                 android:textStyle="bold"
                 android:textSize="18sp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/textColorPrimary"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewRecentOrders"

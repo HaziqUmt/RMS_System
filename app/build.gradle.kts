@@ -50,6 +50,12 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    
+    // Google AI SDK for Android (Gemini)
+    implementation("com.google.ai.client.generativeai:generativeai:0.1.2")
+    // Guava for ListenableFuture support if needed
+    implementation("com.google.guava:guava:31.1-android")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
